@@ -23,9 +23,11 @@ public class HandPoseRecv : MonoBehaviour
             GameObject target = Instantiate(exactPrefab, transform);
             target.name = "finger" + i;
             
+            // By using a smooth follow script the motion looks smoother at the cost of extra latency
             GameObject f = Instantiate(smoothPrefab, transform);
             f.name = "fingerFollower" + i;
             SmoothFollowOther smoothFollowOther = f.AddComponent<SmoothFollowOther>();
+            smoothFollowOther.translateSmoothTime = 0.1f; // smoothness
             smoothFollowOther.other = target.transform;
         }
     }
