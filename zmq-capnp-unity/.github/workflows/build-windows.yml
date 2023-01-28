@@ -1,0 +1,57 @@
+﻿name: Build windows players
+
+on:
+  workflow_dispatch: {}
+  push:
+    tags:
+      - '*'
+
+env:
+  project_name: LumbarPunctureMR
+
+jobs:     
+  buildForWindowsBasedPlatforms:
+    name: Build for ${{ matrix.name }}
+    runs-on: windows-2019
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - targetPlatform: WSAPlayer
+            name: Hololens2
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: Cache Library folder
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: ${{ runner.OS }}-Library-${{ matrix.targetPlatform }}
+          restore-keys: |
+            ${{ runner.OS }}-Library-${{ matrix.targetPlatform }}
+            ${{ runner.OS }}-Library-
+      - name: Build project
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          allowDirtyBuild: true
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: ${{ env.project_name }}-${{ matrix.name }}
+          buildMethod: UnityBuilderAction.Builder.BuildProject
+      - name: Setup msbuild
+        uses: microsoft/setup-msbuild@v1.1
+      - run: dir -r
+      - name: Build visual studio project
+        working-directory: build/${{ matrix.targetPlatform }}/${{ env.project_name }}-${{ matrix.name }}
+        run: msbuild /m /t:build /p:Configuration=Release /p:Platform=ARM64
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.project_name }}-${{ matrix.name }}
+          path: build/${{ matrix.targetPlatform }}/${{ env.project_name }}-${{ matrix.name }}/AppPackages

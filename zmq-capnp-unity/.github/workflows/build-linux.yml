@@ -1,0 +1,57 @@
+﻿name: Build linux players 
+
+on:
+  workflow_dispatch: {}
+  push:
+    tags:
+      - '*'
+
+env:
+  project_name: LumbarPunctureMR
+
+jobs:
+  buildAndTestForLinuxBasedPlatforms:
+    name: Build for ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - targetPlatform: Android
+            name: OculusQuest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: Cache Library folder
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: ${{ runner.OS }}-Library-${{ matrix.targetPlatform }}-${{ hashFiles(matrix.projectPath) }}
+          restore-keys: |
+            ${{ runner.OS }}-Library-${{ matrix.targetPlatform }}-
+            ${{ runner.OS }}-Library-
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build project
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          allowDirtyBuild: true
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: ${{ env.project_name }}-${{ matrix.name }}
+          buildMethod: UnityBuilderAction.Builder.BuildProject
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.project_name }}-${{ matrix.name }}
+          path: build/${{ matrix.targetPlatform }}
