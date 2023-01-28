@@ -11,9 +11,9 @@ public class SmoothFollowOther : MonoBehaviour
     private float currVel = 0;
     public float translateSmoothTime = 0.3F;
     public float rotateSmoothTime = 0.3F;
-    public bool followScale = true;
+    public bool followScale = false;
     public bool smoothingEnabled = true;
-    public float maxDistance = 0.04f;
+    public float maxDistance = 100f;
     public bool local = false;
     // Start is called before the first frame update
     void Start()

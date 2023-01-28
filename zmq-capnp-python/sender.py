@@ -52,7 +52,7 @@ def main(
 
             pub_socket.send_multipart([b"hand_pose/", hand_pose.to_bytes()])
             # print(f"sending: {hand_pose}")
-            time.sleep(1/60)
+            time.sleep(1/10)
 
 
 

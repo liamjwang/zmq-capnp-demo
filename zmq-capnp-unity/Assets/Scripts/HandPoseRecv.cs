@@ -7,25 +7,31 @@ using Vector3 = UnityEngine.Vector3;
 
 public class HandPoseRecv : MonoBehaviour
 {
-    public GameObject finger;
+    public GameObject smoothPrefab;
+    public GameObject exactPrefab;
+
 
     private void Start()
     {
         ZMQConnection connect = ZMQConnection.GetOrCreateInstance();
         connect.Subscribe<CapnpGen.HandPose>("hand_pose/", OnHandPoseRecv);
 
+
         // instantiate finger objects
         for (int i = 0; i < 5; i++)
         {
-            GameObject f = Instantiate(finger, transform);
-            f.name = "finger" + i;
+            GameObject target = Instantiate(exactPrefab, transform);
+            target.name = "finger" + i;
+            
+            GameObject f = Instantiate(smoothPrefab, transform);
+            f.name = "fingerFollower" + i;
+            SmoothFollowOther smoothFollowOther = f.AddComponent<SmoothFollowOther>();
+            smoothFollowOther.other = target.transform;
         }
     }
 
     private void OnHandPoseRecv(CapnpGen.HandPose handPose)
     {
-        // Debug.Log("Hand pose received!");
-
         // update finger positions
         for (int i = 0; i < 5; i++)
         {
