@@ -18,7 +18,7 @@ app = typer.Typer()
 def main(
     ip=typer.Argument('localhost', help="ip address of the receiver"),
     port=typer.Argument(40000, help="port of the receiver"),
-    bind: bool=typer.Option(True, help="bind to the port instead of connecting to it"),
+    bind: bool=typer.Option(False, help="bind to the port instead of connecting to it"),
     ):
     file_path = os.path.dirname(os.path.realpath(__file__))
     messages = capnp.load(os.path.join(file_path, '../capnpspecs/messages.capnp'))

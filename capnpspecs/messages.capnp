@@ -7,5 +7,5 @@ struct Vector3 {
 }
 
 struct HandPose {
-    finger @0 :List(Vector3);
+    fingers @0 :List(Vector3);
 }

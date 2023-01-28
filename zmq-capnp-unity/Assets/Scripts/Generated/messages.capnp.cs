@@ -105,13 +105,13 @@ namespace CapnpGen
         void ICapnpSerializable.Deserialize(DeserializerState arg_)
         {
             var reader = READER.create(arg_);
-            Finger = reader.Finger?.ToReadOnlyList(_ => CapnpSerializable.Create<CapnpGen.Vector3>(_));
+            Fingers = reader.Fingers?.ToReadOnlyList(_ => CapnpSerializable.Create<CapnpGen.Vector3>(_));
             applyDefaults();
         }
 
         public void serialize(WRITER writer)
         {
-            writer.Finger.Init(Finger, (_s1, _v1) => _v1?.serialize(_s1));
+            writer.Fingers.Init(Fingers, (_s1, _v1) => _v1?.serialize(_s1));
         }
 
         void ICapnpSerializable.Serialize(SerializerState arg_)
@@ -123,7 +123,7 @@ namespace CapnpGen
         {
         }
 
-        public IReadOnlyList<CapnpGen.Vector3> Finger
+        public IReadOnlyList<CapnpGen.Vector3> Fingers
         {
             get;
             set;
@@ -140,7 +140,7 @@ namespace CapnpGen
             public static READER create(DeserializerState ctx) => new READER(ctx);
             public static implicit operator DeserializerState(READER reader) => reader.ctx;
             public static implicit operator READER(DeserializerState ctx) => new READER(ctx);
-            public IReadOnlyList<CapnpGen.Vector3.READER> Finger => ctx.ReadList(0).Cast(CapnpGen.Vector3.READER.create);
+            public IReadOnlyList<CapnpGen.Vector3.READER> Fingers => ctx.ReadList(0).Cast(CapnpGen.Vector3.READER.create);
         }
 
         public class WRITER : SerializerState
@@ -150,7 +150,7 @@ namespace CapnpGen
                 this.SetStruct(0, 1);
             }
 
-            public ListOfStructsSerializer<CapnpGen.Vector3.WRITER> Finger
+            public ListOfStructsSerializer<CapnpGen.Vector3.WRITER> Fingers
             {
                 get => BuildPointer<ListOfStructsSerializer<CapnpGen.Vector3.WRITER>>(0);
                 set => Link(0, value);
