@@ -18,9 +18,11 @@
 
 ## Resources
 - https://zeromq.org/
+- https://learning-0mq-with-pyzmq.readthedocs.io/en/latest/pyzmq/pyzmq.html
+- https://netmq.readthedocs.io/en/latest/introduction/
 - https://capnproto.org/
-- https://github.com/GlitchEnzo/NuGetForUnity#unity-20193-or-newer
 - https://github.com/c80k/capnproto-dotnetcore
+- https://github.com/GlitchEnzo/NuGetForUnity#unity-20193-or-newer
 
 ## Troubleshooting
 - Close and open unity
