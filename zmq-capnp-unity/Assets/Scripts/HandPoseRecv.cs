@@ -30,7 +30,7 @@ public class HandPoseRecv : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             GameObject f = transform.Find("finger" + i).gameObject;
-            f.transform.localPosition = new Vector3(handPose.Finger[i].X, handPose.Finger[i].Y, handPose.Finger[i].Z);
+            f.transform.localPosition = new Vector3(handPose.Fingers[i].X, handPose.Fingers[i].Y, handPose.Fingers[i].Z);
         }
     }
 }

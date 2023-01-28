@@ -43,7 +43,7 @@ def main(
         while True:
             hand_pose = messages.HandPose.new_message()
 
-            fingers = hand_pose.init('finger', 5)
+            fingers = hand_pose.init('fingers', 5)
 
             for i in range(5):
                 fingers[i].x = math.sin(time.time() * weights[i][0] * scale)

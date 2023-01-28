@@ -1,5 +1,12 @@
 
-https://github.com/GlitchEnzo/NuGetForUnity#unity-20193-or-newer
-close and open
-install capnp.net.runtime and netmq
-close and open x2
+## Installation
+- 
+
+## Resources
+- https://zeromq.org/
+- https://capnproto.org/
+- https://github.com/GlitchEnzo/NuGetForUnity#unity-20193-or-newer
+- https://github.com/c80k/capnproto-dotnetcore
+
+## Troubleshooting
+- Close and open unity
