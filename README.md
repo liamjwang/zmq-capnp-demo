@@ -23,6 +23,9 @@
 - https://capnproto.org/
 - https://github.com/c80k/capnproto-dotnetcore
 - https://github.com/GlitchEnzo/NuGetForUnity#unity-20193-or-newer
+- https://github.com/OpenAvikom/mr-grpc-unity
+- https://github.com/rderbier/Hololens-QRcodeSample
+- https://game.ci/
 
 ## Troubleshooting
 - Close and open unity
