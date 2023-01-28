@@ -1,3 +1,10 @@
+# ZMQ & Cap'n Proto Demo
+
+Starter code for using zmq and capnp to do networking between python and unity.
+The unity project also contains utilities and prefabs for HoloLens 2, such as:
+- QR code tracking
+- MRTK keypad interface for entering ZMQ server IP
+- Scan QR code with ZMQ IP address to connect
 
 ## Unity Dev Setup
 - Clone the repository
