@@ -21,6 +21,8 @@ The unity project also contains utilities and prefabs for HoloLens 2, such as:
 
 ## Compiling capnp spec
 - Install capnproto and capnpc-csharp-win-x86 using chocolatey: [https://github.com/c80k/capnproto-dotnetcore](https://github.com/c80k/capnproto-dotnetcore)
+    - `choco install capnproto`
+    - `choco install capnpc-csharp-win-x86`
 - Run ./capnp_compile.cmd
 
 ## Resources
