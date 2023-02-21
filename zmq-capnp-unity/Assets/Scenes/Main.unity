@@ -2287,7 +2287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd4fb150d6d424d8105244f82aa8cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IPAddress: localhost
+  IPAddress: 10.203.77.163
   SubPort: 40000
   PubPort: 40001
   HasConnectionError: 0
@@ -2304,7 +2304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d70e5482b8a24957bf158055c04bfffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: localhost
+  ip: 10.203.77.163
   connectOnStart: 1
 --- !u!4 &336777138
 Transform:

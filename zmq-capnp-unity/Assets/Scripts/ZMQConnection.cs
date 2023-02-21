@@ -26,7 +26,7 @@ public class ZMQConnection : MonoBehaviour
     }
 
         
-    [HideInInspector] public string IPAddress = "localhost";
+    public string IPAddress = "localhost";
     public int SubPort = 40000;
     public int PubPort = 40001;
     [HideInInspector] public bool HasConnectionError;
@@ -34,8 +34,8 @@ public class ZMQConnection : MonoBehaviour
     
     private SubscriberSocket subscriber;
     private PublisherSocket publisher;
-    private readonly Dictionary<string, List<Action<ICapnpSerializable>>> callbacks = new();
-    private readonly Dictionary<string, Type> types = new();
+    private readonly Dictionary<string, List<Action<byte[]>>> callbacks = new();
+    // private readonly Dictionary<string, Type> types = new();
     private readonly HashSet<string> subscribedTopics = new();
 
     public void Connect(string ip, int port, int pubport)
@@ -96,51 +96,30 @@ public class ZMQConnection : MonoBehaviour
             {
                 var callback = callbacks.GetValueOrDefault(pair.Key, null);
                 if (callback == null) continue;
-                Type type = types.GetValueOrDefault(pair.Key, null);
-                if (type == null) continue;
-            
-                MemoryStream memoryStream = new(pair.Value);
-                WireFrame readSegments = Framing.ReadSegments(memoryStream);
-                var deserializer = DeserializerState.CreateRoot(readSegments);
-                if (Activator.CreateInstance(type) is not ICapnpSerializable message) continue;
-                message.Deserialize(deserializer);
                 foreach (var c in callback)
                 {
-                    c(message);
+                    c(pair.Value);
                 }
             }
         }
 
     }
     
-    public void Subscribe<T>(string topic, Action<T> callback) where T : ICapnpSerializable
+    public void Subscribe(string topic, Action<byte[]> callback)
     {
         subscribedTopics.Add(topic);
         subscriber?.Subscribe(topic); // TODO: okay to call multiple times?
         Debug.Log($"Subscribed to {topic}");
-        
-        if (types.ContainsKey(topic))
-        {
-            if (types[topic] != typeof(T))
-            {
-                Debug.LogError($"Trying to subscribe to topic {topic} with a different type than before");
-                return;
-            }
-        }
-        else
-        {
-            types[topic] = typeof(T);
-        }
-        
+
         var callbackList = callbacks.GetValueOrDefault(topic, null);
         if (callbackList == null)
         {
-            callbackList = new List<Action<ICapnpSerializable>>();
+            callbackList = new List<Action<byte[]>>();
             callbacks[topic] = callbackList;
         }
         callbackList.Add(msg =>
         {
-            callback((T) msg);
+            callback(msg);
         });
     }
 

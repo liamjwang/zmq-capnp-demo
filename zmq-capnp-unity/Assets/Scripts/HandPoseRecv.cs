@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using Capnp;
 using CapnpGen;
@@ -14,7 +15,8 @@ public class HandPoseRecv : MonoBehaviour
     private void Start()
     {
         ZMQConnection connect = ZMQConnection.GetOrCreateInstance();
-        connect.Subscribe<CapnpGen.HandPose>("hand_pose/", OnHandPoseRecv);
+        connect.Subscribe("hand_pose/", OnHandPoseRecv);
+        // connect.Subscribe<CapnpGen.HandPose>("hand_pose/", OnHandPoseRecv);
 
 
         // instantiate finger objects
@@ -32,13 +34,36 @@ public class HandPoseRecv : MonoBehaviour
         }
     }
 
-    private void OnHandPoseRecv(CapnpGen.HandPose handPose)
+    private void OnHandPoseRecv(byte[] handPose)
     {
-        // update finger positions
+        var str = System.Text.Encoding.Default.GetString(handPose);
+        // print the string
+        
+        string[] words = str.Split(",");
+        
+        float[] numbers = new float[words.Length];
+
+        int j = 0;
+        foreach (var word in words)
+        {
+            var num = float.Parse(word, CultureInfo.InvariantCulture);
+            numbers[j] = num;
+            
+            j++;
+
+        }
+        
+        // print numbers
+        foreach (var num in numbers)
+        {
+            Debug.Log(num);
+        }
+            // update finger positions
         for (int i = 0; i < 5; i++)
         {
             GameObject f = transform.Find("finger" + i).gameObject;
-            f.transform.localPosition = new Vector3(handPose.Fingers[i].X, handPose.Fingers[i].Y, handPose.Fingers[i].Z);
+            f.transform.localPosition = new Vector3(numbers[i * 3], numbers[i * 3 + 1], numbers[i * 3 + 2]);
         }
+        
     }
 }
