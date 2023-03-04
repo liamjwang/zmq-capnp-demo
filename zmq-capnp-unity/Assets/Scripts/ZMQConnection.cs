@@ -41,6 +41,7 @@ public class ZMQConnection : MonoBehaviour
     public void Connect(string ip, int port, int pubport)
     {
         Disconnect();
+        ForceDotNet.Force();
         subscriber = new SubscriberSocket($"tcp://{ip}:{port}");
         publisher = new PublisherSocket();
         publisher.Connect($"tcp://{ip}:{pubport}");
@@ -72,7 +73,7 @@ public class ZMQConnection : MonoBehaviour
     }
     
 
-    private void Start()
+    private void Awake()
     {
         ForceDotNet.Force();
     }
